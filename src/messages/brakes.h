@@ -4,8 +4,8 @@
 #include "message.h"
 #include <Arduino.h>
 
-#define ST_B_MSG_ID 0x212
-#define ST_B_MSG_SIZE 6
+#define BRAKES_MSG_ID 0x212
+#define BRAKES_MSG_SIZE 6
 
 class Brakes: public Message
 {

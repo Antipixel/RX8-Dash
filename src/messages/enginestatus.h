@@ -4,8 +4,8 @@
 #include "message.h"
 #include <Arduino.h>
 
-#define ST_A_MSG_ID 0x420
-#define ST_A_MSG_SIZE 7
+#define ENG_STAT_MSG_ID 0x420
+#define ENG_STAT_MSG_SIZE 7
 
 #define DEFAULT_COOLANT_TEMP 150
 

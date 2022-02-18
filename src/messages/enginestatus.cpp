@@ -1,6 +1,6 @@
 #include "enginestatus.h"
 
-EngineStatus::EngineStatus() : Message(ST_A_MSG_ID, ST_A_MSG_SIZE)
+EngineStatus::EngineStatus() : Message(ENG_STAT_MSG_ID, ENG_STAT_MSG_SIZE)
 {
     this->setCoolantTemperature(DEFAULT_COOLANT_TEMP);
     this->setOilPressure(true);
