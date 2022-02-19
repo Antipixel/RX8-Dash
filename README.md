@@ -5,7 +5,7 @@ instrument cluster, each being of standard frame size and transmitted onto the b
 
 | ID         | Size (Bytes) | Module  | Contents
 | ---------- | :----------: | ------- | --------
-| 0x420      | 7            | PCM     | Coolant Temperature, Warning Lights
+| 0x420      | 7            | PCM     | Coolant Temperature & Warning Lights
 | 0x201      | 8            | PCM     | Vehicle Speed & Engine RPM
 | 0x650      | 1            | PCM     | Cruise Control lights 
 | 0x231      | 2            | TCM     | Gear display, AT warning light
@@ -21,7 +21,13 @@ instrument cluster, each being of standard frame size and transmitted onto the b
 
 ## CAN Bus Message Layouts
 <details>
-    <summary>Message 0x420 - Coolant Temperature, Warning Lights</summary>
+    <summary>Message 0x420 - Coolant Temperature & Warning Lights</summary>
+    <br><b>Coolant Temperature & Warning Lights</b>
+    <p>This message, originating from the PCM, is responsible for initialising the cluster, allowing for the engine-related warning lights to be cleared and the engine
+        coolant temperature to be displayed on the gauge. If the cluster doesn't receive this message at least once every couple of seconds, 
+        then all of the warning lights will default to being illuminated and the needles of the oil pressure/coolant temperature gauges will sit
+        far to the left, off the face of the gauge itself.</p>
+    <b>Message Layout</b>
     <table>
         <thead>
             <tr>
@@ -62,7 +68,7 @@ instrument cluster, each being of standard frame size and transmitted onto the b
                 <td align="center"><span color="gray">-</span></td>
                 <td align="center"><span color="gray">-</span></td>
                 <td align="center"><span color="gray">-</span></td>
-                <td align="center"><code>OilP</code></span></td>
+                <td align="center"><code>OilP</code></td>
             </tr>
             <tr>
                 <td align="center"><b>5</b></td>
@@ -135,6 +141,15 @@ instrument cluster, each being of standard frame size and transmitted onto the b
 </details>
 <details>
     <summary>Message 0x201 - Vehicle Speed & Engine RPM</summary>
+    <br><b>Vehicle Speed & Engine RPM</b>
+    <p>
+        This message, also originating from the PCB, broadcasts both the engine speed (RPM) and the vehicle speed, which is likely being fed to the PCM from
+        the sensor on the extension housing of the transmission. The values accepted by the cluster for the vehicle speed and RPM aren't 1:1, and require scaling
+        and sometimes an offset.<br><br>
+        For example, the expected vehicle speed is in km/h, but with an offset value of 100.0 and a scale of 100.0
+        <br><code class="language-cpp">(kmh + 100.0) * 100.0</code><br>
+    </p>
+    <b>Message Layout</b>
     <table>
         <thead>
             <tr>
@@ -167,7 +182,7 @@ instrument cluster, each being of standard frame size and transmitted onto the b
             </tr>
             <tr>
                 <td align="center"><b>4</b></td>
-                <td colspan="8" rowspan="2" align="center"><b>Vehicle Speed</b><br>(<span color="green">km/h</span> * 100.0) + 10,000</td>
+                <td colspan="8" rowspan="2" align="center"><b>Vehicle Speed</b><br>(<span color="green">km/h</span> + 100.0) * 100.0</td>
             </tr>
             <tr><td align="center"><b>5</b></td></tr>
             <tr>
@@ -183,6 +198,8 @@ instrument cluster, each being of standard frame size and transmitted onto the b
 </details>
 <details>
     <summary>Message 0x650 - Cruise Control</summary>
+    <br><br>
+    <b>Message Layout</b>
     <table>
         <thead>
             <tr>
@@ -200,8 +217,8 @@ instrument cluster, each being of standard frame size and transmitted onto the b
         <tbody>
             <tr>
                 <td align="center"><b>0</b></td>
-                <td align="center"><code>CCM</code></span></td>
-                <td align="center"><code>CC</code></span></td>
+                <td align="center"><code>CCM</code></td>
+                <td align="center"><code>CC</code></td>
                 <td align="center"><span color="gray">-</span></td>
                 <td align="center"><span color="gray">-</span></td>
                 <td align="center"><span color="gray">-</span></td>
@@ -214,7 +231,10 @@ instrument cluster, each being of standard frame size and transmitted onto the b
 </details>
 <details>
     <summary>Message 0x231 - Shift Position Indicator</summary>
-    <br><i>Note: This message is only relevant on automatic models</i>
+    <br>This message comes from the TCM (Transmission Control Module) and is used by the instrument cluster on <b>automatic transmission models</b> to
+    display the current shifter position, or the currently selected gear if the transmission has been placed into manual mode.
+    <br><br>
+    <b>Message Layout</b>
     <table>
         <thead>
             <tr>
@@ -248,9 +268,13 @@ instrument cluster, each being of standard frame size and transmitted onto the b
             </tr>
         </tbody>
     </table>
+    <b>Setting the gear position</b>
+    <p></p>
 </details>
 <details>
     <summary>Message 0x300 - Electronic Power Steering</summary>
+    <br><br>
+    <b>Message Layout</b>
     <table>
         <thead>
             <tr>
@@ -268,7 +292,7 @@ instrument cluster, each being of standard frame size and transmitted onto the b
         <tbody>
             <tr>
                 <td align="center"><b>0</b></td>
-                <td align="center"><code>EPS</code></span></td>
+                <td align="center"><code>EPS</code></td>
                 <td align="center"><span color="gray">-</span></td>
                 <td align="center"><span color="gray">-</span></td>
                 <td align="center"><span color="gray">-</span></td>
@@ -301,6 +325,8 @@ instrument cluster, each being of standard frame size and transmitted onto the b
 </details>
 <details>
     <summary>Message 0x212 - ABS, Traction Control and Stability Control</summary>
+    <br><br>
+    <b>Message Layout</b>
     <table>
         <thead>
             <tr>
@@ -335,17 +361,17 @@ instrument cluster, each being of standard frame size and transmitted onto the b
                 <td align="center"><span color="gray">-</span></td>
                 <td align="center"><span color="gray">-</span></td>
                 <td align="center"><span color="gray">-</span></td>
-                <td align="center"><code>DSC</code></span></td>
+                <td align="center"><code>DSC</code></td>
                 <td align="center"><span color="gray">-</span></td>
                 <td align="center"><span color="gray">-</span></td>
             </tr>
             <tr>
                 <td align="center"><b>4</b></td>
                 <td align="center"><span color="gray">-</span></td>
-                <td align="center"><code>BSW</code></span></td>
+                <td align="center"><code>BSW</code></td>
                 <td align="center"><span color="gray">-</span></td>
                 <td align="center"><span color="gray">-</span></td>
-                <td align="center"><code>ABS</code></span></td>
+                <td align="center"><code>ABS</code></td>
                 <td align="center"><span color="gray">-</span></td>
                 <td align="center"><span color="gray">-</span></td>
                 <td align="center"><span color="gray">-</span></td>
@@ -354,8 +380,8 @@ instrument cluster, each being of standard frame size and transmitted onto the b
                 <td align="center"><b>5</b></td>
                 <td align="center"><span color="gray">-</span></td>
                 <td align="center"><span color="gray">-</span></td>
-                <td align="center"><code>TCSA</code></span></td>
-                <td align="center"><code>TCSO</code></span></td>
+                <td align="center"><code>TCSA</code></td>
+                <td align="center"><code>TCSO</code></td>
                 <td align="center"><span color="gray">-</span></td>
                 <td align="center"><span color="gray">-</span></td>
                 <td align="center"><span color="gray">-</span></td>
