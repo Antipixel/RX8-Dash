@@ -27,7 +27,7 @@ instrument cluster, each being of standard frame size and transmitted onto the b
         coolant temperature to be displayed on the gauge. If the cluster doesn't receive this message at least once every couple of seconds, 
         then all of the warning lights will default to being illuminated and the needles of the oil pressure/coolant temperature gauges will sit
         far to the left, off the face of the gauge itself.</p>
-    <b>Message Layout</b>
+    <h4>Message Layout</h4>
     <table>
         <thead>
             <tr>
@@ -149,7 +149,7 @@ instrument cluster, each being of standard frame size and transmitted onto the b
         For example, the expected vehicle speed is in km/h, but with an offset value of 100.0 and a scale of 100.0
         <br><code class="language-cpp">(kmh + 100.0) * 100.0</code><br>
     </p>
-    <b>Message Layout</b>
+    <h4>Message Layout</h4>
     <table>
         <thead>
             <tr>
@@ -198,8 +198,8 @@ instrument cluster, each being of standard frame size and transmitted onto the b
 </details>
 <details>
     <summary>Message 0x650 - Cruise Control</summary>
-    <br><br>
-    <b>Message Layout</b>
+    <br><b>Cruise Control</b>
+    <p>Once again originating from the PCM, this message simply sets the state of the Cruise Control status indicator lights</p>
     <table>
         <thead>
             <tr>
@@ -228,13 +228,43 @@ instrument cluster, each being of standard frame size and transmitted onto the b
             </tr>
         </tbody>
     </table>
+    <h4>Flag Descriptions</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Light</th>
+                <th>Flag</th>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><img src="./icons/cruisemain.png?raw=true" width="48" height="48"/></td>
+                <td><code>CCM</code></td>
+                <td>Cruise Control Main Light</td>
+                <td>Illuminates the green Cruise Main light when set to 1.<br> In the OEM application, this light indicates that the cruise control
+                system has been activated and a cruising speed has been set</td>
+            </tr>
+            <tr>
+                <td><img src="./icons/cruise.png?raw=true" width="48" height="48"/></td>
+                <td><code>CC</code></td>
+                <td>Cruise Control Light</td>
+                <td>Illuminates the Cruise Main light when set to 1.<br>In the OEM application, this light indicates the cruise control system is active</td>
+            </tr>
+        </tbody>
+    </table>
 </details>
 <details>
     <summary>Message 0x231 - Shift Position Indicator</summary>
-    <br>This message comes from the TCM (Transmission Control Module) and is used by the instrument cluster on <b>automatic transmission models</b> to
-    display the current shifter position, or the currently selected gear if the transmission has been placed into manual mode.
-    <br><br>
-    <b>Message Layout</b>
+    <br><b>Shift Position Indicator</b>
+    <p>
+        This message originates from the TCM and is used by the instrument cluster on <b>automatic transmission models</b> to display the current shifter position. 
+        The gear position can be displayed in either regular or manual mode, selected by setting the <code>Man</code> flag in byte 1. In regular mode, the cluster will
+        display P, R, N or D. In manual mode, it will display a numeric value on the 7-segement display representing the gear the transmission is currently in. For the 
+        specifics of each mode, refer to the entry for the <code>Man</code> flag in the <a href="#flag-descriptions-2">flag descriptions</a> table.
+    </p>
+    <h4>Message Layout</h4>
     <table>
         <thead>
             <tr>
@@ -268,13 +298,48 @@ instrument cluster, each being of standard frame size and transmitted onto the b
             </tr>
         </tbody>
     </table>
-    <b>Setting the gear position</b>
-    <p></p>
+    <h4>Flag Descriptions</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Light</th>
+                <th>Flag</th>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><img src="./icons/manual.png?raw=true" width="32" height="32"/></td>
+                <td><code>Man</code></td>
+                <td>Manual Shift Mode</td>
+                <td>
+                    <b>When this flag is set to 0</b>, the position indicator will display the position defined in the <i>lower 4 bits</i> of
+                    byte 0. Valid position values are:
+                    <ul>
+                        <li><b>0x1</b> for Park</li>
+                        <li><b>0x2</b> for Reverse</li>
+                        <li><b>0x3</b> for Neutral</li>
+                        <li><b>0x4</b> for Drive</li>
+                    </ul>
+                    <b>When this flag is set to 1</b>, the position indicator will display the numeric value defined in the <i>upper 4 bits</i> of byte 0,
+                    using the 7-segement display. Values <b>1</b> through <b>6</b> have been tested on a cluster from a 6 speed automatic, however the behaviour
+                    of one pulled from a 4 speed automatic model is uncertain<br>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="./icons/at.png?raw=true" width="32" height="32"/></td>
+                <td><code>AT</code></td>
+                <td>Automatic Transmission Malfunction Light</td>
+                <td>Illuminates the AT malfunction light</td>
+            </tr>
+        </tbody>
+    </table>
 </details>
 <details>
     <summary>Message 0x300 - Electronic Power Steering</summary>
     <br><br>
-    <b>Message Layout</b>
+    <h4>Message Layout</h4>
     <table>
         <thead>
             <tr>
@@ -326,7 +391,7 @@ instrument cluster, each being of standard frame size and transmitted onto the b
 <details>
     <summary>Message 0x212 - ABS, Traction Control and Stability Control</summary>
     <br><br>
-    <b>Message Layout</b>
+    <h4>Message Layout</h4>
     <table>
         <thead>
             <tr>
