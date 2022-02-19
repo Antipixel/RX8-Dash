@@ -283,7 +283,7 @@ instrument cluster, each being of standard frame size and transmitted onto the b
             <tr>
                 <td align="center"><b>0</b></td>
                 <td align="center" colspan="4"><b>Manual Mode Gear</b><br>First (1) to Sixth (6)</td>
-                <td align="center" colspan="4"><b>Shifter Position</b><br>PARK (1) | REVERSE (2) | NEUTRAL (3) | DRIVE (4)</td>
+                <td align="center" colspan="4"><b>Shifter Position</b><br>P (1) | R (2) | N (3) | D (4)</td>
             </tr>
             <tr>
                 <td align="center"><b>1</b></td>
@@ -324,7 +324,7 @@ instrument cluster, each being of standard frame size and transmitted onto the b
                     </ul>
                     <b>When this flag is set to 1</b>, the position indicator will display the numeric value defined in the <i>upper 4 bits</i> of byte 0,
                     using the 7-segement display. Values <b>1</b> through <b>6</b> have been tested on a cluster from a 6 speed automatic, however the behaviour
-                    of one pulled from a 4 speed automatic model is uncertain<br>
+                    of one removed from a 4 speed automatic model is uncertain<br>
                 </td>
             </tr>
             <tr>
@@ -338,7 +338,8 @@ instrument cluster, each being of standard frame size and transmitted onto the b
 </details>
 <details>
     <summary>Message 0x300 - Electronic Power Steering</summary>
-    <br><br>
+    <br><b>Electronic Power Steering</b>
+    <p>This message, originating from the EPS Control Module, sets the state of the EPS malfunction light.</p>
     <h4>Message Layout</h4>
     <table>
         <thead>
@@ -390,7 +391,10 @@ instrument cluster, each being of standard frame size and transmitted onto the b
 </details>
 <details>
     <summary>Message 0x212 - ABS, Traction Control and Stability Control</summary>
-    <br><br>
+    <br><b>ABS, Traction Control and Stability Control</b>
+    <p>This message is broadcast by the ABS/DSC module, it is used to set the various malfunction indication lights relating to ABS/DSC/TCS.
+    It appears the warning light for the TCS can only be illuminated while the DSC OFF (<code>DSC</code>) flag is set to 1. As I'm not familiar
+    with the RX8 and the operation of its TCS, and the owners manual only briefly glosses over the topic, I am unable to determine the significance of this.</p>
     <h4>Message Layout</h4>
     <table>
         <thead>
